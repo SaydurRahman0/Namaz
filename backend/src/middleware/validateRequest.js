@@ -1,7 +1,8 @@
 const ApiResponse = require('../utils/apiResponse');
+const { isValidDateString } = require('../utils/dateHelper');
 
 function validatePrayerTimesQuery(req, res, next) {
-  const { latitude, longitude } = req.query;
+  const { latitude, longitude, date } = req.query;
 
   if (!latitude || !longitude) {
     return ApiResponse.badRequest(res, 'Latitude and longitude are required.');
@@ -18,17 +19,21 @@ function validatePrayerTimesQuery(req, res, next) {
     return ApiResponse.badRequest(res, 'Invalid longitude. Must be between -180 and 180.');
   }
 
-  if (req.query.method) {
+  if (date && !isValidDateString(date)) {
+    return ApiResponse.badRequest(res, 'Invalid date format. Expected YYYY-MM-DD or DD-MM-YYYY.');
+  }
+
+  if (req.query.method !== undefined && req.query.method !== '') {
     const method = parseInt(req.query.method, 10);
-    if (isNaN(method) || method < 0 || method > 23) {
-      return ApiResponse.badRequest(res, 'Invalid calculation method.');
+    if (isNaN(method) || method < 0 || method > 25) {
+      return ApiResponse.badRequest(res, 'Invalid calculation method ID.');
     }
   }
 
-  if (req.query.school) {
+  if (req.query.school !== undefined && req.query.school !== '') {
     const school = parseInt(req.query.school, 10);
     if (school !== 0 && school !== 1) {
-      return ApiResponse.badRequest(res, 'Invalid school. Use 0 for Shafi\'i or 1 for Hanafi.');
+      return ApiResponse.badRequest(res, 'Invalid school parameter. Use 0 for Shafi\'i or 1 for Hanafi.');
     }
   }
 

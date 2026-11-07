@@ -19,6 +19,7 @@ export default [
       globals: {
         window: 'readonly',
         document: 'readonly',
+        navigator: 'readonly',
         localStorage: 'readonly',
         console: 'readonly',
         setTimeout: 'readonly',
@@ -26,6 +27,7 @@ export default [
         setInterval: 'readonly',
         clearInterval: 'readonly',
         Promise: 'readonly',
+        Intl: 'readonly',
       },
     },
     rules: {

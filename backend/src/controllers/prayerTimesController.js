@@ -1,22 +1,25 @@
 const aladhanService = require('../services/aladhanService');
 const ApiResponse = require('../utils/apiResponse');
 
-async function getToday(req, res, next) {
+async function getPrayerTimes(req, res, next) {
   try {
-    const data = await aladhanService.getTodayTimes(req.query);
+    const data = await aladhanService.getPrayerTimes(req.query);
     return ApiResponse.success(res, data, 'Prayer times fetched successfully');
   } catch (err) {
     next(err);
   }
 }
 
-async function getMonthly(req, res, next) {
+async function getCalculationMethods(req, res, next) {
   try {
-    const data = await aladhanService.getMonthlyTimes(req.query);
-    return ApiResponse.success(res, data, 'Monthly prayer times fetched successfully');
+    const methods = await aladhanService.getCalculationMethods();
+    return ApiResponse.success(res, methods, 'Calculation methods fetched successfully');
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = { getToday, getMonthly };
+module.exports = {
+  getPrayerTimes,
+  getCalculationMethods,
+};

@@ -1,7 +1,8 @@
 import Card from '../common/Card';
+import { formatTime12h } from '../../utils/prayerTimeUtils';
 
 export default function PrayerTimeCard({
-  _prayerKey,
+  prayerKey,
   nameEn,
   nameAr,
   nameBn,
@@ -10,16 +11,19 @@ export default function PrayerTimeCard({
   isNext = false,
   isCurrent = false,
   isLive = false,
+  use24Hour = false,
   icon: Icon,
   className = '',
 }) {
+  const formattedTime = time ? (use24Hour ? time : formatTime12h(time)) : '--:--';
+
   return (
     <Card
       variant={isNext || isCurrent ? 'elevated' : 'interactive'}
       padding="md"
       className={`relative overflow-hidden transition-all duration-200 flex flex-col justify-between ${
         isNext
-          ? 'ring-2 ring-emerald-500/80 bg-emerald-50/30 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-700'
+          ? 'ring-2 ring-emerald-500 bg-emerald-50/40 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-700'
           : isCurrent
           ? 'ring-2 ring-amber-500/80 bg-amber-50/30 dark:bg-amber-950/20 border-amber-300 dark:border-amber-700'
           : ''
@@ -47,7 +51,7 @@ export default function PrayerTimeCard({
           <div
             className={`w-10 h-10 rounded-xl flex items-center justify-center ${
               isNext
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-emerald-600 text-white shadow-2xs'
                 : 'bg-emerald-100/70 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
             }`}
           >
@@ -55,7 +59,7 @@ export default function PrayerTimeCard({
           </div>
 
           {rakats && (
-            <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
               {rakats}
             </span>
           )}
@@ -83,16 +87,16 @@ export default function PrayerTimeCard({
       <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
         <div className="flex items-baseline justify-between">
           <span className="text-xl sm:text-2xl font-bold font-mono tracking-tight text-slate-900 dark:text-slate-100">
-            {isLive && time ? time : '--:--'}
+            {formattedTime}
           </span>
           <span className="text-[11px] font-medium text-slate-400 dark:text-slate-500">
-            {isLive && time ? 'Adhan' : 'Phase 03'}
+            {isLive && time ? (prayerKey === 'sunrise' ? 'Rise' : 'Adhan') : 'Unavailable'}
           </span>
         </div>
 
         {!isLive && (
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">
-            Calculated in Phase 03
+          <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+            Awaiting location sync
           </p>
         )}
       </div>

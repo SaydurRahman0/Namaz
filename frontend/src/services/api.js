@@ -35,8 +35,18 @@ export const systemAPI = {
  * Prayer Times API endpoints
  */
 export const prayerTimesAPI = {
+  getTimes: (params) => api.get('/prayer-times', { params }),
   getToday: (params) => api.get('/prayer-times/today', { params }),
-  getMonthly: (params) => api.get('/prayer-times/monthly', { params }),
+  getMethods: () => api.get('/prayer-times/methods'),
+};
+
+/**
+ * Location and Geocoding API endpoints
+ */
+export const locationAPI = {
+  search: (query) => api.get('/location/search', { params: { query } }),
+  reverse: (latitude, longitude) =>
+    api.get('/location/reverse', { params: { latitude, longitude } }),
 };
 
 /**
