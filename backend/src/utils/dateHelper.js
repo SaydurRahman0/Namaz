@@ -40,9 +40,20 @@ function dmyToIso(dmyStr) {
   return `${year}-${month}-${day}`;
 }
 
+function getNextDayDmy(dmyStr) {
+  const [day, month, year] = dmyStr.split('-').map(Number);
+  const d = new Date(Date.UTC(year, month - 1, day));
+  d.setUTCDate(d.getUTCDate() + 1);
+  const nextDay = String(d.getUTCDate()).padStart(2, '0');
+  const nextMonth = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const nextYear = d.getUTCFullYear();
+  return `${nextDay}-${nextMonth}-${nextYear}`;
+}
+
 module.exports = {
   isValidDateString,
   normalizeToDmy,
   dmyToIso,
+  getNextDayDmy,
 };
 
